@@ -10,22 +10,26 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomButton from "./components/CustomButton";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setName, setAge } from "../src/redux/action";
 const Home = ({ navigation }) => {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
+  const { name, age } = useSelector((state) => state.userReducer);
+
+  const dispatch = useDispatch();
+  //   const [name, setName] = useState("");
+  //   const [age, setAge] = useState("");
   useEffect(() => {
     getData();
   }, []);
   const getData = () => {
     try {
-      AsyncStorage.getItem("UserDetails").then((value) => {
-        if (value != null) {
-          let user = JSON.parse(value);
-          setName(user.name);
-          setAge(user.age);
-        }
-      });
+      //   AsyncStorage.getItem("UserDetails").then((value) => {
+      //     if (value != null) {
+      //       let user = JSON.parse(value);
+      //       setName(user.name);
+      //       setAge(user.age);
+      //     }
+      //   });
     } catch (error) {
       console.log("Error in retrieving UserName");
     }
@@ -33,7 +37,7 @@ const Home = ({ navigation }) => {
   const updateData = async () => {
     if (name.length > 0) {
       try {
-        await AsyncStorage.setItem("UserName", name);
+        // await AsyncStorage.setItem("UserName", name);
         Alert.alert("Success", "Your name is been updated");
       } catch (error) {
         console.log(error);
@@ -44,7 +48,7 @@ const Home = ({ navigation }) => {
   };
   const removeData = async () => {
     try {
-      await AsyncStorage.removeItem("UserName");
+      //   await AsyncStorage.removeItem("UserName");
       navigation.navigate("Login");
     } catch (error) {
       console.log(error);

@@ -12,6 +12,7 @@ import Settings from "./src/Settings";
 import Login from "./src/components/Login";
 import { Provider } from "react-redux";
 import { Store } from "./src/redux/store";
+import Map from "./src/components/Map";
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         >
           <Stack.Screen name="home" component={Home} />
 
+          <Stack.Screen name="Map" component={Map} />
           <Stack.Screen
             options={{ headerLargerTitle: true }}
             name="Login"

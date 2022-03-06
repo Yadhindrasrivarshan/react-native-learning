@@ -2,24 +2,27 @@ import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
+  FlatList,
   StyleSheet,
   Text,
   TextInput,
   TextInputBase,
+  TouchableOpacity,
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomButton from "./components/CustomButton";
 import { useSelector, useDispatch } from "react-redux";
-import { setName, setAge } from "../src/redux/action";
+import { setName, setAge, getCitites } from "../src/redux/action";
 const Home = ({ navigation }) => {
-  const { name, age } = useSelector((state) => state.userReducer);
+  const { name, age, cities } = useSelector((state) => state.userReducer);
 
   const dispatch = useDispatch();
   //   const [name, setName] = useState("");
   //   const [age, setAge] = useState("");
   useEffect(() => {
     getData();
+    dispatch(getCitites());
   }, []);
   const getData = () => {
     try {
@@ -58,7 +61,25 @@ const Home = ({ navigation }) => {
     <View style={styles.body}>
       <Text>Welcome {name} !</Text>
       <Text>Your {age} !</Text>
-      <TextInput
+      <FlatList
+        data={cities}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Map", {
+                city: item.countryName,
+              });
+            }}
+          >
+            <View style={styles.item}>
+              <Text style={styles.title}>{item.countryName}</Text>
+              <Text style={styles.subtitle}>{item.countryCode}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      {/* <TextInput
         style={styles.input}
         onChangeText={(value) => setName(value)}
         placeholder="Enter your name"
@@ -73,7 +94,7 @@ const Home = ({ navigation }) => {
         color="#1eb900"
         onPressFunction={updateData}
       />
-      <CustomButton title="Delete" color="red" onPressFunction={removeData} />
+      <CustomButton title="Delete" color="red" onPressFunction={removeData} /> */}
     </View>
   );
 };
@@ -99,6 +120,25 @@ const styles = StyleSheet.create({
     marginTop: 130,
     marginBottom: 10,
     height: 50,
+  },
+  item: {
+    backgroundColor: "#ffffff",
+    borderWidth: 2,
+    borderColor: "#cccccc",
+    borderRadius: 5,
+    margin: 7,
+    width: 350,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 30,
+    margin: 10,
+  },
+  subtitle: {
+    fontSize: 30,
+    margin: 10,
+    color: "#999999",
   },
 });
 

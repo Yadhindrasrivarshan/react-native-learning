@@ -3,28 +3,39 @@ import { Alert, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import CustomButton from "./CustomButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setAge, setName } from "../redux/action";
+
 const Login = ({ navigation }) => {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
+  //   const [name, setName] = useState("");
+  //   const [age, setAge] = useState("");
+
+  const { name, age } = useSelector((state) => state.userReducer);
+
+  const dispatch = useDispatch();
   useEffect(() => {
     getData();
   }, []);
   const getData = () => {
     try {
-      AsyncStorage.getItem("UserDetails").then((value) => {
-        if (value != null) {
-          navigation.navigate("home");
-        }
-      });
+      //   AsyncStorage.getItem("UserDetails").then((value) => {
+      //     if (value != null) {
+      //       navigation.navigate("home");
+      //     }
+      //   });
     } catch (error) {
       console.log("Error in retrieving UserName");
     }
   };
   const setData = async () => {
+    console.log("Hey");
     if (name.length > 0 && age.length > 0) {
-      const user = { name, age };
+      //   const user = { name, age };
       try {
-        await AsyncStorage.setItem("UserDetails", JSON.stringify(user));
+        dispatch(setName(name));
+        dispatch(setAge(age));
+
+        // await AsyncStorage.setItem("UserDetails", JSON.stringify(user));
         navigation.navigate("home");
       } catch (error) {
         console.log(error);
@@ -40,12 +51,12 @@ const Login = ({ navigation }) => {
       <Text style={styles.text}>SQLite Storage</Text>
       <TextInput
         style={styles.input}
-        onChangeText={(value) => setName(value)}
+        onChangeText={(value) => dispatch(setName(value))}
         placeholder="Enter your name"
       />
       <TextInput
         style={styles.input}
-        onChangeText={(value) => setAge(value)}
+        onChangeText={(value) => dispatch(setAge(value))}
         placeholder="Enter your age"
       />
       <CustomButton title="Login" color="#1eb900" onPressFunction={setData} />

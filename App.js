@@ -13,26 +13,50 @@ import Login from "./src/components/Login";
 import { Provider } from "react-redux";
 import { Store } from "./src/redux/store";
 import Map from "./src/components/Map";
-const Stack = createNativeStackNavigator();
+import Splash from "./src/components/Splash";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import ToDo from "./src/components/ToDo";
+import Done from "./src/components/Done";
+import Task from "./src/components/Task";
+const RootStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function HomeTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name={"To-Do"} component={ToDo} />
+      <Tab.Screen name={"Done"} component={Done} />
+    </Tab.Navigator>
+  );
+}
 export default function App() {
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Login"
+        <RootStack.Navigator
+          initialRouteName="Splash"
           screenOptions={{
             stackAnimation: "slide_from_right",
           }}
         >
-          <Stack.Screen name="home" component={Home} />
+          <RootStack.Screen name="home" component={Home} />
 
-          <Stack.Screen name="Map" component={Map} />
-          <Stack.Screen
+          <RootStack.Screen
             options={{ headerLargerTitle: true }}
-            name="Login"
-            component={Login}
+            name="Splash"
+            component={Splash}
           />
-        </Stack.Navigator>
+          <RootStack.Screen
+            options={{ headerLargerTitle: true }}
+            name="MyTasks"
+            component={HomeTabs}
+          />
+          <RootStack.Screen
+            options={{ headerLargerTitle: true }}
+            name="Task"
+            component={Task}
+          />
+        </RootStack.Navigator>
       </NavigationContainer>
     </Provider>
   );

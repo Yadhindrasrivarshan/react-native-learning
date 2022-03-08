@@ -28,7 +28,6 @@ const Login = ({ navigation }) => {
     }
   };
   const setData = async () => {
-    console.log("Hey");
     if (name.length > 0 && age.length > 0) {
       //   const user = { name, age };
       try {
